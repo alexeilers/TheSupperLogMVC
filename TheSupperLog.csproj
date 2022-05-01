@@ -18,6 +18,10 @@
     <None Remove="Properties\" />
     <None Remove="Views\" />
     <None Remove="Data\Migrations\" />
+    <None Remove="Models\User\" />
+    <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
+    <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
+    <None Remove="Services\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.16" />
@@ -29,6 +33,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.16" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\Meal\" />
@@ -41,6 +47,8 @@
     <Folder Include="Data\" />
     <Folder Include="Data\Migrations\" />
     <Folder Include="Data\Entities\" />
+    <Folder Include="Models\User\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="TheSupperLog.WebMVC\Properties\launchSettings.json" />
