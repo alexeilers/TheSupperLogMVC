@@ -18,7 +18,7 @@ namespace TheSupperLog.Services
             _context = context;
         }
 
-
+        //CREATE MEAL
         public async Task<bool> CreateMealAsync(MealCreate model)
         {
             var mealEntity = new MealEntity
@@ -35,6 +35,8 @@ namespace TheSupperLog.Services
             return numberOfChanges == 1;
         }
 
+
+        //DELETE MEAL
         public async Task<bool> DeleteMealAsync(int mealId)
         {
             var mealEntity = await _context.Meals.FindAsync(mealId);
@@ -44,7 +46,7 @@ namespace TheSupperLog.Services
         }
 
     
-
+        //GET ALL MEALS
         public async Task<IEnumerable<MealListItem>> GetAllMealsAsync()
         {
             var mealQuery = _context
@@ -59,6 +61,8 @@ namespace TheSupperLog.Services
             return await mealQuery.ToListAsync();
         }
 
+
+        //GET MEAL BY NAME
         public async Task<MealDetail> GetMealByNameAsync(string name)
         {
             var meal = await _context.Meals
@@ -74,7 +78,7 @@ namespace TheSupperLog.Services
         }
 
 
-
+        //UPDATE MEAL
         public async Task<bool> UpdateMealAsync(MealEdit model)
         {
             var mealEntity = await _context.Meals.FindAsync(model.Id);
@@ -82,7 +86,6 @@ namespace TheSupperLog.Services
             mealEntity.Name = model.Name;
             mealEntity.Rating = model.Rating;
             mealEntity.DateModified = DateTimeOffset.Now;
-
 
             var numberOfChanges = await _context.SaveChangesAsync();
 
