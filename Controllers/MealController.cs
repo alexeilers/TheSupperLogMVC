@@ -45,8 +45,14 @@ namespace TheSupperLog.Controllers
             }
 
             var mealEntity = await _context.Meals
-                .Include(m => m.Owner)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Select(m => new MealDetail
+                {
+                    Id = m.Id,
+                    Name = m.Name,
+                    Rating = m.Rating,
+                    DateAdded = m.DateAdded,
+                })
+                .FirstOrDefaultAsync(r => r.Id == id);
             if (mealEntity == null)
             {
                 return NotFound();
@@ -92,12 +98,18 @@ namespace TheSupperLog.Controllers
                 return NotFound();
             }
 
-            var mealEntity = await _context.Meals.FindAsync(id);
+            var mealEntity = await _context.Meals.Select(m => new MealEdit
+            {
+                Id = m.Id,
+                Name = m.Name,
+                Rating = m.Rating,
+            })
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (mealEntity == null)
             {
                 return NotFound();
             }
-            ViewData["OwnerId"] = new SelectList(_context.Users, "Id", "Email", mealEntity.OwnerId);
+
             return View(mealEntity);
         }
 
@@ -106,23 +118,28 @@ namespace TheSupperLog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,OwnerId,Name,Rating,DateAdded,DateModified")] MealEntity mealEntity)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,OwnerId,Name,Rating,DateAdded,DateModified")] MealEdit mealEntity)
         {
-            if (id != mealEntity.Id)
+            var meal = await _context.Meals.FindAsync(id);
+            if (meal == null)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                meal.Id = mealEntity.Id;
+                meal.Name = mealEntity.Name;
+                meal.Rating = mealEntity.Rating;
+                meal.DateModified = DateTimeOffset.Now;
                 try
                 {
-                    _context.Update(mealEntity);
+                    _context.Update(meal);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MealEntityExists(mealEntity.Id))
+                    if (!MealEntityExists(meal.Id))
                     {
                         return NotFound();
                     }
@@ -133,8 +150,7 @@ namespace TheSupperLog.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["OwnerId"] = new SelectList(_context.Users, "Id", "Email", mealEntity.OwnerId);
-            return View(mealEntity);
+            return View (meal);
         }
 
         // GET: Meal/Delete/5
