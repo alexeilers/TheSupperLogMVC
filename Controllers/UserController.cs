@@ -10,23 +10,22 @@ using TheSupperLog.Data.Entities;
 
 namespace TheSupperLog.Controllers
 {
-    public class MealController : Controller
+    public class UserController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MealController(ApplicationDbContext context)
+        public UserController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Meal
+        // GET: User
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Meals.Include(m => m.Owner);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Users.ToListAsync());
         }
 
-        // GET: Meal/Details/5
+        // GET: User/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace TheSupperLog.Controllers
                 return NotFound();
             }
 
-            var mealEntity = await _context.Meals
-                .Include(m => m.Owner)
+            var userEntity = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (mealEntity == null)
+            if (userEntity == null)
             {
                 return NotFound();
             }
 
-            return View(mealEntity);
+            return View(userEntity);
         }
 
-        // GET: Meal/Create
+        // GET: User/Create
         public IActionResult Create()
         {
-            ViewData["OwnerId"] = new SelectList(_context.Users, "Id", "Email");
             return View();
         }
 
-        // POST: Meal/Create
+        // POST: User/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,OwnerId,Name,Rating,DateAdded,DateModified")] MealEntity mealEntity)
+        public async Task<IActionResult> Create([Bind("Id,Email,Username,Password,DateAdded")] UserEntity userEntity)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(mealEntity);
+                _context.Add(userEntity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["OwnerId"] = new SelectList(_context.Users, "Id", "Email", mealEntity.OwnerId);
-            return View(mealEntity);
+            return View(userEntity);
         }
 
-        // GET: Meal/Edit/5
+        // GET: User/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace TheSupperLog.Controllers
                 return NotFound();
             }
 
-            var mealEntity = await _context.Meals.FindAsync(id);
-            if (mealEntity == null)
+            var userEntity = await _context.Users.FindAsync(id);
+            if (userEntity == null)
             {
                 return NotFound();
             }
-            ViewData["OwnerId"] = new SelectList(_context.Users, "Id", "Email", mealEntity.OwnerId);
-            return View(mealEntity);
+            return View(userEntity);
         }
 
-        // POST: Meal/Edit/5
+        // POST: User/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,OwnerId,Name,Rating,DateAdded,DateModified")] MealEntity mealEntity)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Email,Username,Password,DateAdded")] UserEntity userEntity)
         {
-            if (id != mealEntity.Id)
+            if (id != userEntity.Id)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace TheSupperLog.Controllers
             {
                 try
                 {
-                    _context.Update(mealEntity);
+                    _context.Update(userEntity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MealEntityExists(mealEntity.Id))
+                    if (!UserEntityExists(userEntity.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace TheSupperLog.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["OwnerId"] = new SelectList(_context.Users, "Id", "Email", mealEntity.OwnerId);
-            return View(mealEntity);
+            return View(userEntity);
         }
 
-        // GET: Meal/Delete/5
+        // GET: User/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +124,30 @@ namespace TheSupperLog.Controllers
                 return NotFound();
             }
 
-            var mealEntity = await _context.Meals
-                .Include(m => m.Owner)
+            var userEntity = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (mealEntity == null)
+            if (userEntity == null)
             {
                 return NotFound();
             }
 
-            return View(mealEntity);
+            return View(userEntity);
         }
 
-        // POST: Meal/Delete/5
+        // POST: User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mealEntity = await _context.Meals.FindAsync(id);
-            _context.Meals.Remove(mealEntity);
+            var userEntity = await _context.Users.FindAsync(id);
+            _context.Users.Remove(userEntity);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MealEntityExists(int id)
+        private bool UserEntityExists(int id)
         {
-            return _context.Meals.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }

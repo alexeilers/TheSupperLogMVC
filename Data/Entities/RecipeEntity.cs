@@ -9,10 +9,10 @@ namespace TheSupperLog.Data.Entities
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [ForeignKey(nameof(Meal))]
-        public int MealId { get; set; }
-        public MealEntity Meal { get; set; }
+        //[Required]
+        //[ForeignKey(nameof(Meal))]
+        //public int MealId { get; set; }
+        //public MealEntity Meal { get; set; }
 
 
         [Required]

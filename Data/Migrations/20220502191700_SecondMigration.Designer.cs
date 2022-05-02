@@ -10,8 +10,8 @@ using TheSupperLog.Data;
 namespace TheSupperLog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220501182231_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220502191700_SecondMigration")]
+    partial class SecondMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,9 +44,14 @@ namespace TheSupperLog.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
+
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("Meals");
                 });
@@ -101,9 +106,6 @@ namespace TheSupperLog.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MealId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -118,8 +120,6 @@ namespace TheSupperLog.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MealId");
 
                     b.ToTable("Recipes");
                 });
@@ -159,21 +159,18 @@ namespace TheSupperLog.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("TheSupperLog.Data.Entities.RatingEntity", b =>
-                {
-                    b.HasOne("TheSupperLog.Data.Entities.MealEntity", "Meal")
+                    b.HasOne("TheSupperLog.Data.Entities.RecipeEntity", "Recipe")
                         .WithMany()
-                        .HasForeignKey("MealId")
+                        .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Meal");
+                    b.Navigation("Owner");
+
+                    b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("TheSupperLog.Data.Entities.RecipeEntity", b =>
+            modelBuilder.Entity("TheSupperLog.Data.Entities.RatingEntity", b =>
                 {
                     b.HasOne("TheSupperLog.Data.Entities.MealEntity", "Meal")
                         .WithMany()

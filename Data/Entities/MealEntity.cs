@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,6 +15,11 @@ namespace TheSupperLog.Data.Entities
         [ForeignKey(nameof(Owner))]
         public int OwnerId { get; set; }
         public UserEntity Owner { get; set; }
+
+        //[Required]
+        //[ForeignKey(nameof(Recipe))]
+        //public int RecipeId { get; set; }
+        //public RecipeEntity Recipe { get; set; }
 
         [Required]
         public string Name { get; set; }

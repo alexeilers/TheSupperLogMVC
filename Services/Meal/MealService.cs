@@ -45,7 +45,7 @@ namespace TheSupperLog.Services
             return await _context.SaveChangesAsync() == 1; ;
         }
 
-    
+
         //GET ALL MEALS
         public async Task<IEnumerable<MealListItem>> GetAllMealsAsync()
         {

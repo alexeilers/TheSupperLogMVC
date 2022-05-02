@@ -17,5 +17,7 @@ namespace TheSupperLog.Models.Meal
 
         [Required]
         public int Rating { get; set; }
+
+        public DateTimeOffset DateAdded { get; set; }
     }
 }

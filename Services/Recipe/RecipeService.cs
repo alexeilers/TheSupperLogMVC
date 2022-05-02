@@ -23,7 +23,6 @@ namespace TheSupperLog.Services.Recipe
             var recipeEntity = new RecipeEntity
             {
                 Name = model.Name,
-                MealId = model.MealId,
                 Category = model.Category,
                 Yield = model.Yield,
                 PrepTime = model.PrepTime,

@@ -1,7 +1,7 @@
 ﻿using System;
 namespace TheSupperLog.Models.User
 {
-    public class UserEdit
+    public class UserListItem
     {
         public int Id { get; set; }
         public string Username { get; set; }

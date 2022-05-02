@@ -43,7 +43,6 @@ namespace TheSupperLog.Controllers
             }
 
             var recipeEntity = await _context.Recipes
-                .Include(r => r.Meal)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (recipeEntity == null)
             {
@@ -71,7 +70,6 @@ namespace TheSupperLog.Controllers
             {
                 _context.Add(new RecipeEntity
                 {
-                    MealId = model.MealId,
                     Name = model.Name,
                     Category = model.Category,
                     Yield = model.Yield,
@@ -101,7 +99,6 @@ namespace TheSupperLog.Controllers
                 .Select(r => new RecipeEdit
                 {
                     Id = r.Id,
-                    MealId = r.MealId,
                     Name = r.Name,
 
                 })
@@ -128,7 +125,6 @@ namespace TheSupperLog.Controllers
 
             if (ModelState.IsValid)
             {
-                recipe.MealId = model.MealId;
                 recipe.Name = model.Name;
                 recipe.Category = model.Category;
                 recipe.PrepTime = model.PrepTime;
@@ -154,7 +150,7 @@ namespace TheSupperLog.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MealId"] = new SelectList(_context.Meals, "Id", "Name", recipe.MealId);
+            ViewData["MealId"] = new SelectList(_context.Meals, "Id", "Name");
             return View(recipe);
         }
 

@@ -17,7 +17,6 @@
     <None Remove="Controllers\" />
     <None Remove="Properties\" />
     <None Remove="Views\" />
-    <None Remove="Data\Migrations\" />
     <None Remove="Models\User\" />
     <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
     <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
@@ -26,6 +25,7 @@
     <None Remove="Services\Recipes\" />
     <None Remove="Services\Rating\" />
     <None Remove="Services\User\" />
+    <None Remove="Data\Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.16" />
@@ -49,7 +49,6 @@
     <Folder Include="Views\" />
     <Folder Include="wwwroot\" />
     <Folder Include="Data\" />
-    <Folder Include="Data\Migrations\" />
     <Folder Include="Data\Entities\" />
     <Folder Include="Models\User\" />
     <Folder Include="Services\" />
@@ -57,6 +56,7 @@
     <Folder Include="Services\Recipe\" />
     <Folder Include="Services\Rating\" />
     <Folder Include="Services\User\" />
+    <Folder Include="Data\Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="TheSupperLog.WebMVC\Properties\launchSettings.json" />
