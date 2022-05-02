@@ -26,7 +26,5 @@ namespace TheSupperLog.Models.Recipe
         [MaxLength(4000, ErrorMessage = "{0} must contain no more than {1} characters.")]
         public string Instructions { get; set; }
 
-        
-        public DateTimeOffset DateAdded { get; set; }
     }
 }

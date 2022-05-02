@@ -21,33 +21,34 @@ namespace TheSupperLog.Controllers
         }
 
         // GET: Meal
-        public async Task<IActionResult> Index(string searchString) {
+        public async Task<IActionResult> Index(string searchString)
+        {
 
-        //public async Task<IActionResult> Index()
-        //{
-        //var meals = await _context
-        //    .Meals
-        //    .Select(m => new MealListItem
-        //    {
-        //        Id = m.Id,
-        //        Name = m.Name,
-        //        Rating = m.Rating,
-        //        DateAdded = m.DateAdded,
-        //    })
-        //    .ToListAsync();
-        //return View(meals);
+            //public async Task<IActionResult> Index()
+            //{
+            //var meals = await _context
+            //    .Meals
+            //    .Select(m => new MealListItem
+            //    {
+            //        Id = m.Id,
+            //        Name = m.Name,
+            //        Rating = m.Rating,
+            //        DateAdded = m.DateAdded,
+            //    })
+            //    .ToListAsync();
+            //return View(meals);
 
 
-        //SEARCH Meal
-        var meals = from m in _context.Meals
-                             select m;
+            //SEARCH Meal
+            var meals = from m in _context.Meals
+                        select m;
 
-                if (!String.IsNullOrEmpty(searchString))
-                {
-                    meals = meals.Where(s => s.Name!.Contains(searchString));
-                }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                meals = meals.Where(s => s.Name!.Contains(searchString));
+            }
 
-                return View(await meals.ToListAsync());
+            return View(await meals.ToListAsync());
         }
 
         // GET: Meal/Details/5
@@ -100,7 +101,7 @@ namespace TheSupperLog.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+
             return View(model);
         }
 
@@ -164,7 +165,7 @@ namespace TheSupperLog.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View (meal);
+            return View(meal);
         }
 
         // GET: Meal/Delete/5

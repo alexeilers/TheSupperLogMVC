@@ -8,6 +8,8 @@ namespace TheSupperLog.Models.Recipe
         [Required]
         public int Id { get; set; }
 
+        public int MealId { get; set; }
+
         [Required]
         [MinLength(2, ErrorMessage = "{0} must be at least {1} characters long.")]
         [MaxLength(100, ErrorMessage = "{0} must contain no more than {1} characters.")]

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TheSupperLog.Data;
 using TheSupperLog.Data.Entities;
+using TheSupperLog.Models.Recipe;
 
 namespace TheSupperLog.Controllers
 {
@@ -20,10 +21,17 @@ namespace TheSupperLog.Controllers
         }
 
         // GET: Recipe
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var applicationDbContext = _context.Recipes.Include(r => r.Meal);
-            return View(await applicationDbContext.ToListAsync());
+            var recipes = from r in _context.Recipes
+                        select r;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                recipes = recipes.Where(s => s.Name!.Contains(searchString));
+            }
+
+            return View(await recipes.ToListAsync());
         }
 
         // GET: Recipe/Details/5
@@ -57,16 +65,27 @@ namespace TheSupperLog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MealId,Name,Category,Yield,PrepTime,CookTime,TotalTime,Instructions,DateAdded,DateModified")] RecipeEntity recipeEntity)
+        public async Task<IActionResult> Create([Bind("Id,MealId,Name,Category,Yield,PrepTime,CookTime,TotalTime,Instructions,DateAdded,DateModified")] RecipeEntity model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(recipeEntity);
+                _context.Add(new RecipeEntity
+                {
+                    MealId = model.MealId,
+                    Name = model.Name,
+                    Category = model.Category,
+                    Yield = model.Yield,
+                    PrepTime = model.PrepTime,
+                    CookTime = model.CookTime,
+                    TotalTime = model.TotalTime,
+                    Instructions = model.Instructions,
+                    DateAdded = DateTimeOffset.Now,
+                });
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MealId"] = new SelectList(_context.Meals, "Id", "Name", recipeEntity.MealId);
-            return View(recipeEntity);
+
+            return View(model);
         }
 
         // GET: Recipe/Edit/5
@@ -77,13 +96,21 @@ namespace TheSupperLog.Controllers
                 return NotFound();
             }
 
-            var recipeEntity = await _context.Recipes.FindAsync(id);
-            if (recipeEntity == null)
+            var recipe = await _context
+                .Recipes
+                .Select(r => new RecipeEdit
+                {
+                    Id = r.Id,
+                    MealId = r.MealId,
+                    Name = r.Name,
+
+                })
+                .FirstOrDefaultAsync(r => r.Id == id);
+            if (recipe == null)
             {
                 return NotFound();
             }
-            ViewData["MealId"] = new SelectList(_context.Meals, "Id", "Name", recipeEntity.MealId);
-            return View(recipeEntity);
+            return View(recipe);
         }
 
         // POST: Recipe/Edit/5
@@ -91,23 +118,32 @@ namespace TheSupperLog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MealId,Name,Category,Yield,PrepTime,CookTime,TotalTime,Instructions,DateAdded,DateModified")] RecipeEntity recipeEntity)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Category,Yield,PrepTime,CookTime,TotalTime,Instructions,DateAdded,DateModified")] RecipeEdit model)
         {
-            if (id != recipeEntity.Id)
+            var recipe = await _context.Recipes.FindAsync(id);
+            if (recipe == null)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                recipe.MealId = model.MealId;
+                recipe.Name = model.Name;
+                recipe.Category = model.Category;
+                recipe.PrepTime = model.PrepTime;
+                recipe.CookTime = model.CookTime;
+                recipe.TotalTime = model.TotalTime;
+                recipe.Instructions = model.Instructions;
+                
                 try
                 {
-                    _context.Update(recipeEntity);
+                    _context.Update(recipe);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RecipeEntityExists(recipeEntity.Id))
+                    if (!RecipeEntityExists(recipe.Id))
                     {
                         return NotFound();
                     }
@@ -118,8 +154,8 @@ namespace TheSupperLog.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MealId"] = new SelectList(_context.Meals, "Id", "Name", recipeEntity.MealId);
-            return View(recipeEntity);
+            ViewData["MealId"] = new SelectList(_context.Meals, "Id", "Name", recipe.MealId);
+            return View(recipe);
         }
 
         // GET: Recipe/Delete/5
@@ -130,15 +166,21 @@ namespace TheSupperLog.Controllers
                 return NotFound();
             }
 
-            var recipeEntity = await _context.Recipes
-                .Include(r => r.Meal)
+            var recipe = await _context
+                .Recipes
+                .Select(m => new RecipeDetail
+                {
+                    Id = m.Id,
+                    Name = m.Name,
+                    
+                })
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (recipeEntity == null)
+            if (recipe == null)
             {
                 return NotFound();
             }
 
-            return View(recipeEntity);
+            return View(recipe);
         }
 
         // POST: Recipe/Delete/5

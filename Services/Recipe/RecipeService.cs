@@ -30,6 +30,7 @@ namespace TheSupperLog.Services.Recipe
                 CookTime = model.CookTime,
                 TotalTime = model.TotalTime,
                 Instructions = model.Instructions,
+                DateAdded = DateTimeOffset.Now
             };
 
             _context.Recipes.Add(recipeEntity);
