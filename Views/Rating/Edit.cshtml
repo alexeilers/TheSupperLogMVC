@@ -1,32 +1,29 @@
-@model TheSupperLog.Models.Meal.MealCreate
+@model TheSupperLog.Data.Entities.RatingEntity
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>Create</h1>
+<h1>Edit</h1>
 
-<h4>MealEntity</h4>
+<h4>RatingEntity</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*<div class="form-group">
-                <label asp-for="OwnerId" class="control-label"></label>
-                <select asp-for="OwnerId" class="form-control" asp-items="ViewBag.OwnerId"></select>
-            </div>*@
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="MealId" class="control-label"></label>
+                <select asp-for="MealId" class="form-control" asp-items="ViewBag.MealId"></select>
+                <span asp-validation-for="MealId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Rating" class="control-label"></label>
                 <input asp-for="Rating" class="form-control" />
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
+            <div class="form-group">
                 <label asp-for="DateAdded" class="control-label"></label>
                 <input asp-for="DateAdded" class="form-control" />
                 <span asp-validation-for="DateAdded" class="text-danger"></span>
@@ -35,9 +32,9 @@
                 <label asp-for="DateModified" class="control-label"></label>
                 <input asp-for="DateModified" class="form-control" />
                 <span asp-validation-for="DateModified" class="text-danger"></span>
-            </div>*@
+            </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
