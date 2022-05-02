@@ -86,7 +86,7 @@ namespace TheSupperLog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,OwnerId,Name,Rating,DateAdded,DateModified")] MealCreate model)
+        public async Task<IActionResult> Create([Bind("Name,Rating")] MealCreate model)
         {
             if (ModelState.IsValid)
             {
@@ -175,15 +175,21 @@ namespace TheSupperLog.Controllers
                 return NotFound();
             }
 
-            var mealEntity = await _context.Meals
-                .Include(m => m.Owner)
+            var meal = await _context
+                .Meals
+                .Select(m => new MealDetail
+                {
+                    Id = m.Id,
+                    Name = m.Name,
+                    Rating = m.Rating
+                })
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (mealEntity == null)
+            if (meal == null)
             {
                 return NotFound();
             }
 
-            return View(mealEntity);
+            return View(meal);
         }
 
         // POST: Meal/Delete/5

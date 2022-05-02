@@ -22,6 +22,10 @@
     <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
     <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
     <None Remove="Services\" />
+    <None Remove="Services\Meal\" />
+    <None Remove="Services\Recipes\" />
+    <None Remove="Services\Rating\" />
+    <None Remove="Services\User\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.16" />
@@ -49,6 +53,10 @@
     <Folder Include="Data\Entities\" />
     <Folder Include="Models\User\" />
     <Folder Include="Services\" />
+    <Folder Include="Services\Meal\" />
+    <Folder Include="Services\Recipe\" />
+    <Folder Include="Services\Rating\" />
+    <Folder Include="Services\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="TheSupperLog.WebMVC\Properties\launchSettings.json" />

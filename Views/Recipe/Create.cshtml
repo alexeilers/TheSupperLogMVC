@@ -1,0 +1,78 @@
+@model TheSupperLog.Data.Entities.RecipeEntity
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>RecipeEntity</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @*<label asp-for="MealId" class="control-label"></label>*@
+                <label>Select a Meal:</label>
+                <select asp-for="MealId" class ="form-control" asp-items="ViewBag.MealId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Category" class="control-label"></label>
+                <input asp-for="Category" class="form-control" />
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Yield" class="control-label"></label>
+                <input asp-for="Yield" class="form-control" />
+                <span asp-validation-for="Yield" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrepTime" class="control-label"></label>
+                <input asp-for="PrepTime" class="form-control" />
+                <span asp-validation-for="PrepTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CookTime" class="control-label"></label>
+                <input asp-for="CookTime" class="form-control" />
+                <span asp-validation-for="CookTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalTime" class="control-label"></label>
+                <input asp-for="TotalTime" class="form-control" />
+                <span asp-validation-for="TotalTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Instructions" class="control-label"></label>
+                <input asp-for="Instructions" class="form-control" />
+                <span asp-validation-for="Instructions" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="DateAdded" class="control-label"></label>
+                <input asp-for="DateAdded" class="form-control" />
+                <span asp-validation-for="DateAdded" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateModified" class="control-label"></label>
+                <input asp-for="DateModified" class="form-control" />
+                <span asp-validation-for="DateModified" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
