@@ -8,191 +8,117 @@ using Microsoft.EntityFrameworkCore;
 using TheSupperLog.Data;
 using TheSupperLog.Data.Entities;
 using TheSupperLog.Models.Recipe;
+using TheSupperLog.Services.Recipe;
 
 namespace TheSupperLog.Controllers
 {
     public class RecipeController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRecipeService _recipeService;
 
-        public RecipeController(ApplicationDbContext context)
+        public RecipeController(IRecipeService recipeService)
         {
-            _context = context;
+            _recipeService = recipeService;
         }
+
 
         // GET: Recipe
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index()
         {
-            var recipes = from r in _context.Recipes
-                        select r;
+            var recipes = await _recipeService.GetAllRecipesAsync();
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                recipes = recipes.Where(s => s.Name!.Contains(searchString));
-            }
-
-            return View(await recipes.ToListAsync());
+            return View(recipes);
         }
+
+
+        //// GET: Recipe/Details/5
+        //public IActionResult Details()
+        //{
+        //    return View();
+        //}
 
         // GET: Recipe/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var recipe = await _recipeService.GetRecipeByIdAsync(id);
 
-            var recipeEntity = await _context.Recipes
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (recipeEntity == null)
+            if (recipe == null)
             {
-                return NotFound();
+                return null;
             }
-
-            return View(recipeEntity);
+            return View(recipe);
         }
+
 
         // GET: Recipe/Create
         public IActionResult Create()
         {
-            ViewData["MealId"] = new SelectList(_context.Meals, "Id", "Name");
             return View();
         }
 
+
         // POST: Recipe/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MealId,Name,Category,Yield,PrepTime,CookTime,TotalTime,Instructions,DateAdded,DateModified")] RecipeEntity model)
+        public async Task<ActionResult> Create(RecipeCreate model)
         {
-            if (ModelState.IsValid)
+            if (model == null) return BadRequest();
+
+            bool wasSuccess = await _recipeService.CreateRecipeAsync(model);
+
+            if (wasSuccess)
             {
-                _context.Add(new RecipeEntity
-                {
-                    Name = model.Name,
-                    Category = model.Category,
-                    Yield = model.Yield,
-                    PrepTime = model.PrepTime,
-                    CookTime = model.CookTime,
-                    TotalTime = model.TotalTime,
-                    Instructions = model.Instructions,
-                    DateAdded = DateTimeOffset.Now,
-                });
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Ok();
             }
 
-            return View(model);
+            else return UnprocessableEntity();
         }
 
-        // GET: Recipe/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+
+        //GET EDIT Meal/Edit/5
+        public IActionResult Edit()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var recipe = await _context
-                .Recipes
-                .Select(r => new RecipeEdit
-                {
-                    Id = r.Id,
-                    Name = r.Name,
-
-                })
-                .FirstOrDefaultAsync(r => r.Id == id);
-            if (recipe == null)
-            {
-                return NotFound();
-            }
-            return View(recipe);
+            return View();
         }
+
 
         // POST: Recipe/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Category,Yield,PrepTime,CookTime,TotalTime,Instructions,DateAdded,DateModified")] RecipeEdit model)
+        public async Task<IActionResult> Edit(RecipeEdit model)
         {
-            var recipe = await _context.Recipes.FindAsync(id);
-            if (recipe == null)
-            {
-                return NotFound();
-            }
+            if (model == null || !ModelState.IsValid) return BadRequest();
 
-            if (ModelState.IsValid)
-            {
-                recipe.Name = model.Name;
-                recipe.Category = model.Category;
-                recipe.PrepTime = model.PrepTime;
-                recipe.CookTime = model.CookTime;
-                recipe.TotalTime = model.TotalTime;
-                recipe.Instructions = model.Instructions;
-                
-                try
-                {
-                    _context.Update(recipe);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RecipeEntityExists(recipe.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["MealId"] = new SelectList(_context.Meals, "Id", "Name");
-            return View(recipe);
+            bool wasSuccess = await _recipeService.UpdateRecipeAsync(model);
+
+            if (wasSuccess) return Ok();
+
+            return BadRequest();
         }
+
 
         // GET: Recipe/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var recipe = await _context
-                .Recipes
-                .Select(m => new RecipeDetail
-                {
-                    Id = m.Id,
-                    Name = m.Name,
-                    
-                })
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (recipe == null)
-            {
-                return NotFound();
-            }
-
-            return View(recipe);
+            return View();
         }
+
 
         // POST: Recipe/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int recipeId)
         {
-            var recipeEntity = await _context.Recipes.FindAsync(id);
-            _context.Recipes.Remove(recipeEntity);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            var recipe = await _recipeService.GetRecipeByIdAsync(recipeId);
 
-        private bool RecipeEntityExists(int id)
-        {
-            return _context.Recipes.Any(e => e.Id == id);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+
+            bool wasSuccess = await _recipeService.DeleteRecipeAsync(recipeId);
+
+            if (!wasSuccess) return BadRequest();
+
+            return Ok();
         }
     }
 }

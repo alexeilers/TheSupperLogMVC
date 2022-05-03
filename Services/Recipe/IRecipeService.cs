@@ -9,7 +9,7 @@ namespace TheSupperLog.Services.Recipe
     {
         Task<IEnumerable<RecipeListItem>> GetAllRecipesAsync();
         Task<bool> CreateRecipeAsync(RecipeCreate model);
-        //Task<RecipeDetail> GetRecipeByNameAsync(string name);
+        Task<RecipeDetail> GetRecipeByIdAsync(int id);
         Task<bool> UpdateRecipeAsync(RecipeEdit model);
         Task<bool> DeleteRecipeAsync(int recipeId);
     }

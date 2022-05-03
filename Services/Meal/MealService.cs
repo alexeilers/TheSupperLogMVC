@@ -7,7 +7,7 @@ using TheSupperLog.Data;
 using TheSupperLog.Data.Entities;
 using TheSupperLog.Models.Meal;
 
-namespace TheSupperLog.Services
+namespace TheSupperLog.Services.Meal
 {
     public class MealService : IMealService
     {
@@ -56,9 +56,27 @@ namespace TheSupperLog.Services
                 {
                     Id = m.Id,
                     Name = m.Name,
+                    Rating = m.Rating,
+                    OwnerId = m.OwnerId,
                     DateAdded = m.DateAdded
                 });
             return await mealQuery.ToListAsync();
+        }
+
+        //GET MEAL BY ID
+        public async Task<MealDetail> GetMealByIdAsync(int mealId)
+        {
+            var model = await _context.Meals.FirstOrDefaultAsync(m => m.Id == mealId);
+
+            if (model == null) return null;
+
+            var meal = new MealDetail
+            {
+                Name = model.Name,
+                Rating = model.Rating,
+            };
+
+            return meal;
         }
 
 

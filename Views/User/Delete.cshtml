@@ -1,4 +1,4 @@
-@model TheSupperLog.Data.Entities.UserEntity
+@model TheSupperLog.Models.User.UserDetail
 
 @{
     ViewData["Title"] = "Delete";
@@ -23,12 +23,12 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Username)
         </dd>
-        <dt class = "col-sm-2">
+        @*<dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Password)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Password)
-        </dd>
+        </dd>*@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DateAdded)
         </dt>

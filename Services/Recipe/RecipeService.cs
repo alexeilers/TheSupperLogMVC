@@ -60,10 +60,20 @@ namespace TheSupperLog.Services.Recipe
             return await recipeQuery.ToListAsync();
         }
 
-        //public async Task<RecipeDetail> GetRecipeByNameAsync(string name)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<RecipeDetail> GetRecipeByIdAsync(int id)
+        {
+            var model = await _context.Recipes.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (model == null) return null;
+
+            var recipe = new RecipeDetail
+            {
+                Name = model.Name,
+                Category = model.Category,
+            };
+
+            return recipe;
+        }
 
         public async Task<bool> UpdateRecipeAsync(RecipeEdit model)
         {

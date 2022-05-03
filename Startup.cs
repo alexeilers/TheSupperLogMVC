@@ -10,6 +10,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TheSupperLog.Data;
+using TheSupperLog.Services;
+using TheSupperLog.Services.Meal;
+using TheSupperLog.Services.Rating;
+using TheSupperLog.Services.Recipe;
+using TheSupperLog.Services.User;
 
 namespace TheSupperLog
 {
@@ -25,6 +30,11 @@ namespace TheSupperLog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IMealService, MealService>();
+            services.AddScoped<IRecipeService, RecipeService>();
+            services.AddScoped<IRatingService, RatingService>();
+            services.AddScoped<IUserService, UserService>();
+
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(Configuration["ConnectionStrings:GSLocal"]));
             services.AddControllersWithViews();

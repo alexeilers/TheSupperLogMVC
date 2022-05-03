@@ -8,9 +8,9 @@ namespace TheSupperLog.Services.Rating
     public interface IRatingService
     {
 
-        Task<bool> CreateRatingAsync(RatingCreate request);
-        //Task<IEnumerable<RatingListItem>> GetMealByRatingAsync(int rating);
-        Task<bool> UpdateRatingRatingAsync(RatingEdit request);
-        Task<bool> DeleteRatingAsync(int recipeId);
+        //Task<bool> CreateRatingAsync(RatingCreate request);
+        Task<IEnumerable<RatingListItem>> GetAllRatingsAsync();
+        //Task<bool> UpdateRatingRatingAsync(RatingEdit request);
+        //Task<bool> DeleteRatingAsync(int recipeId);
     }
 }

@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore;
 using TheSupperLog.Data.Entities;
+using TheSupperLog.Models.Meal;
 
 namespace TheSupperLog.Data
 {
@@ -15,5 +16,6 @@ namespace TheSupperLog.Data
         public DbSet<MealEntity> Meals { get; set; }
         public DbSet<RecipeEntity> Recipes { get; set; }
         public DbSet<RatingEntity> Ratings { get; set; }
+        public DbSet<TheSupperLog.Models.Meal.MealListItem> MealListItem { get; set; }
     }
 }

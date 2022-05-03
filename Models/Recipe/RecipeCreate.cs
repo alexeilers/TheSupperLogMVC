@@ -5,8 +5,8 @@ namespace TheSupperLog.Models.Recipe
 {
     public class RecipeCreate
     {
-        [Required]
-        public int MealId { get; set; }
+        //[Required]
+        //public int MealId { get; set; }
 
 
         [Required]

@@ -19,5 +19,7 @@ namespace TheSupperLog.Models.User
 
         [Compare(nameof(Password))]
         public string ConfirmPassword { get; set; }
+
+        public DateTimeOffset DateAdded { get; set; }
     }
 }

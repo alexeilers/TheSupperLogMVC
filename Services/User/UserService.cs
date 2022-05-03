@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TheSupperLog.Data;
 using TheSupperLog.Data.Entities;
 using TheSupperLog.Models.User;
@@ -39,9 +40,47 @@ namespace TheSupperLog.Services.User
             return await _context.SaveChangesAsync() == 1; ;
         }
 
-        //public Task<IEnumerable<UserListItem>> GetAllUsersAsync()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<IEnumerable<UserListItem>> GetAllUsersAsync()
+        {
+            var userQuery = _context
+                .Users
+                .Select(m =>
+                new UserListItem
+                {
+                    Id = m.Id,
+                    Email = m.Email,
+                    Username = m.Username,
+                    DateAdded = m.DateAdded
+                });
+            return await userQuery.ToListAsync();
+        }
+
+        public async Task<bool> UpdateUserAsync(UserEdit model)
+        {
+            var user = await _context.Users.FindAsync(model.Id);
+
+            user.Username = model.Username;
+            user.Email = model.Email;
+
+            var numberOfChanges = await _context.SaveChangesAsync();
+
+            return numberOfChanges == 1;
+        }
+
+
+        public async Task<UserDetail> GetUserByIdAsync(int userId)
+        {
+            var model = await _context.Users.FirstOrDefaultAsync(m => m.Id == userId);
+
+            if (model == null) return null;
+
+            var user = new UserDetail
+            {
+                Username = model.Username,
+                Email = model.Email,
+            };
+
+            return user;
+        }
     }
 }

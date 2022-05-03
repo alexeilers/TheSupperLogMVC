@@ -7,147 +7,109 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TheSupperLog.Data;
 using TheSupperLog.Data.Entities;
+using TheSupperLog.Models.User;
+using TheSupperLog.Services.User;
 
 namespace TheSupperLog.Controllers
 {
     public class UserController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUserService _userService;
 
-        public UserController(ApplicationDbContext context)
+        public UserController(IUserService userService)
         {
-            _context = context;
+            _userService = userService;
         }
 
-        // GET: User
+        // GET: Meal
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            var meals = await _userService.GetAllUsersAsync();
+
+            return View(meals);
         }
 
-        // GET: User/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Meal/Details/5
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var meal = await _userService.GetUserByIdAsync(id);
 
-            var userEntity = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (userEntity == null)
+            if (meal == null)
             {
-                return NotFound();
+                return null;
             }
-
-            return View(userEntity);
+            return View(meal);
         }
 
-        // GET: User/Create
+        // GET: Meal/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: User/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        // POST: Meal/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Email,Username,Password,DateAdded")] UserEntity userEntity)
+        public async Task<ActionResult> Create(UserCreate model)
         {
-            if (ModelState.IsValid)
+            if (model == null) return BadRequest();
+
+            bool wasSuccess = await _userService.CreateUserAsync(model);
+
+            if (wasSuccess)
             {
-                _context.Add(userEntity);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Ok();
             }
-            return View(userEntity);
+
+            else return UnprocessableEntity();
         }
 
-        // GET: User/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        //GET EDIT Meal/Edit/5
+        public IActionResult Edit()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var userEntity = await _context.Users.FindAsync(id);
-            if (userEntity == null)
-            {
-                return NotFound();
-            }
-            return View(userEntity);
+            return View();
         }
 
-        // POST: User/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        // POST: Meal/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Email,Username,Password,DateAdded")] UserEntity userEntity)
+        public async Task<IActionResult> Edit(UserEdit model)
         {
-            if (id != userEntity.Id)
-            {
-                return NotFound();
-            }
+            if (model == null || !ModelState.IsValid) return BadRequest();
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(userEntity);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserEntityExists(userEntity.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(userEntity);
+            bool wasSuccess = await _userService.UpdateUserAsync(model);
+
+            if (wasSuccess) return Ok();
+
+            return BadRequest();
         }
 
-        // GET: User/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+
+        // GET: Meal/Delete/5
+        public IActionResult Delete()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var userEntity = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (userEntity == null)
-            {
-                return NotFound();
-            }
-
-            return View(userEntity);
+            return View();
         }
 
-        // POST: User/Delete/5
+
+
+        // POST: Meal/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var userEntity = await _context.Users.FindAsync(id);
-            _context.Users.Remove(userEntity);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool UserEntityExists(int id)
+        public async Task<IActionResult> Delete(int mealId)
         {
-            return _context.Users.Any(e => e.Id == id);
+            var productEntity = await _userService.GetUserByIdAsync(mealId);
+
+            if (productEntity == null)
+            {
+                return NotFound();
+            }
+
+            bool wasSuccess = await _userService.DeleteUserAsync(mealId);
+
+            if (!wasSuccess) return BadRequest();
+
+            return Ok();
         }
     }
 }

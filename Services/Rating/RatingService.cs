@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TheSupperLog.Data;
 using TheSupperLog.Data.Entities;
 using TheSupperLog.Models.Rating;
@@ -39,10 +41,18 @@ namespace TheSupperLog.Services.Rating
             return await _context.SaveChangesAsync() == 1; ;
         }
 
-        //public async Task<IEnumerable<RatingListItem>> GetMealsByRatingAsync(int rating)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<IEnumerable<RatingListItem>> GetAllRatingsAsync()
+        {
+            var ratingQuery = _context
+                .Ratings
+                .Select(m =>
+                new RatingListItem
+                {
+                    Id = m.Id,
+                    Rating = m.Rating,
+                });
+            return await ratingQuery.ToListAsync();
+        }
 
         public async Task<bool> UpdateRatingRatingAsync(RatingEdit model)
         {
