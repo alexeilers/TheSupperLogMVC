@@ -37,17 +37,18 @@ namespace TheSupperLog.Controllers
         //    return View();
         //}
 
-        // GET: Recipe/Details/5
-        public async Task<IActionResult> Details(int id)
-        {
-            var recipe = await _recipeService.GetRecipeByIdAsync(id);
 
-            if (recipe == null)
-            {
-                return null;
-            }
-            return View(recipe);
-        }
+        //// GET: Recipe/Details/5
+        //public async Task<IActionResult> DetailsById(int id)
+        //{
+        //    var recipe = await _recipeService.GetRecipeByIdAsync(id);
+
+        //    if (recipe == null)
+        //    {
+        //        return null;
+        //    }
+        //    return View(recipe);
+        //}
 
 
         // GET: Recipe/Create
@@ -67,10 +68,10 @@ namespace TheSupperLog.Controllers
 
             if (wasSuccess)
             {
-                return Ok();
+                return RedirectToAction(nameof(Index));
             }
 
-            else return UnprocessableEntity();
+            return UnprocessableEntity();
         }
 
 
@@ -105,34 +106,42 @@ namespace TheSupperLog.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            else return BadRequest();
+            return BadRequest();
         }
 
 
         // GET: Recipe/Delete/5
-        public IActionResult Delete()
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            var recipeQuery = await _recipeService.GetRecipeByIdAsync(id);
+
+            var recipe = new RecipeDetail();
+
+            recipe.Id = recipeQuery.Id;
+            recipe.Name = recipeQuery.Name;
+            recipe.Category = recipeQuery.Category;
+            recipe.PrepTime = recipeQuery.PrepTime;
+            recipe.CookTime = recipeQuery.CookTime;
+            recipe.TotalTime = recipeQuery.TotalTime;
+            recipe.Instructions = recipeQuery.Instructions;
+            recipe.DateModified = recipeQuery.DateModified;
+
+            return View(recipe);
         }
 
 
         // POST: Recipe/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int recipeId)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var recipe = await _recipeService.GetRecipeByIdAsync(recipeId);
+            bool wasSuccess = await _recipeService.DeleteRecipeAsync(id);
 
-            if (recipe == null)
+            if (wasSuccess)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
-            bool wasSuccess = await _recipeService.DeleteRecipeAsync(recipeId);
-
-            if (!wasSuccess) return BadRequest();
-
-            return Ok();
+            return BadRequest();
         }
     }
 }

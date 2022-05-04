@@ -109,22 +109,22 @@ namespace TheSupperLog.Controllers
             meal.Rating = mealQuery.Rating;
 
             return View(meal);
+        }
 
-        //}
 
-        //    // POST: Meal/Delete/5
-        //    [HttpPost, ActionName("Delete")]
 
-        //public async Task<IActionResult> Delete(MealDetail meal)
-        //{
-        //    bool wasSuccess = await _mealService.DeleteMealAsync(meal);
+        // POST: Meal/Delete/5
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            bool wasSuccess = await _mealService.DeleteMealAsync(id);
 
-        //    if (wasSuccess)
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
+            if (wasSuccess)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
-        //    else return BadRequest();
+            else return BadRequest();
         }
     }
 }

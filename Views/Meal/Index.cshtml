@@ -6,7 +6,7 @@
 }
 
 <p>
-    <a asp-action="Create", button type="button" class="btn btn-primary btn-lrg">Log a meal</a>
+    <a asp-action="Create", button type="button" class="btn btn-success btn-lg">Log a meal</a>
 </p>
 
 <hr />
@@ -21,9 +21,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.OwnerId)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -43,9 +43,9 @@
         @foreach (var item in Model)
         {
 <tr>
-    <td>
+    @*<td>
         @Html.DisplayFor(modelItem => item.OwnerId)
-    </td>
+    </td>*@
     <td>
         @Html.DisplayFor(modelItem => item.Name)
     </td>
@@ -59,9 +59,14 @@
             @Html.DisplayFor(modelItem => item.DateModified)
         </td>*@
     <td>
-        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+        <a asp-action="Edit" asp-route-id="@item.Id" button type="button" class="btn btn-primary">Edit</a> 
+
+
+        @*CURRENTLY UNNECESSARY WITHOUT ADDITIONAL FEATURES LIKE NOTES / LINKING TO RECIPE
+        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
+
+
+        <a asp-action="Delete" asp-route-id="@item.Id" button type="button" class="btn btn-light">Delete</a>
     </td>
 </tr>
 }

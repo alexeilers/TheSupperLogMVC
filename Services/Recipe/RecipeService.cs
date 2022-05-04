@@ -18,6 +18,9 @@ namespace TheSupperLog.Services.Recipe
             _context = context;
         }
 
+
+
+        //CREATE RECIPE
         public async Task<bool> CreateRecipeAsync(RecipeCreate model)
         {
             var recipeEntity = new RecipeEntity
@@ -38,14 +41,21 @@ namespace TheSupperLog.Services.Recipe
             return numberOfChanges == 1;
         }
 
+
+
+
+        //DELETE RECIPE
         public async Task<bool> DeleteRecipeAsync(int recipeId)
         {
-            var recipeEntity = await _context.Meals.FindAsync(recipeId);
+            var recipeEntity = await _context.Recipes.FindAsync(recipeId);
 
-            _context.Meals.Remove(recipeEntity);
-            return await _context.SaveChangesAsync() == 1; ;
+            _context.Recipes.Remove(recipeEntity);
+            return await _context.SaveChangesAsync() == 1;
         }
 
+
+
+        //GET ALL RECIPES
         public async Task<IEnumerable<RecipeListItem>> GetAllRecipesAsync()
         {
             var recipeQuery = _context
@@ -55,14 +65,18 @@ namespace TheSupperLog.Services.Recipe
                 {
                     Id = m.Id,
                     Name = m.Name,
+                    Category = m.Category,
                     DateAdded = m.DateAdded
                 });
             return await recipeQuery.ToListAsync();
         }
 
-        public async Task<RecipeDetail> GetRecipeByIdAsync(int id)
+
+
+        //GET RECIPE BY ID
+        public async Task<RecipeDetail> GetRecipeByIdAsync(int recipeId)
         {
-            var model = await _context.Recipes.FirstOrDefaultAsync(m => m.Id == id);
+            var model = await _context.Recipes.FirstOrDefaultAsync(m => m.Id == recipeId);
 
             if (model == null) return null;
 
@@ -82,6 +96,9 @@ namespace TheSupperLog.Services.Recipe
             return recipe;
         }
 
+
+
+        //UPDATE RECIPE
         public async Task<bool> UpdateRecipeAsync(RecipeEdit model)
         {
             var recipeEntity = await _context.Recipes.FindAsync(model.Id);
