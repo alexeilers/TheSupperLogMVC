@@ -75,9 +75,22 @@ namespace TheSupperLog.Controllers
 
 
         //GET EDIT Meal/Edit/5
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var recipeQuery = await _recipeService.GetRecipeByIdAsync(id);
+
+            var recipe = new RecipeEdit();
+
+            recipe.Id = recipeQuery.Id;
+            recipe.Name = recipeQuery.Name;
+            recipe.Category = recipeQuery.Category;
+            recipe.PrepTime = recipeQuery.PrepTime;
+            recipe.CookTime = recipeQuery.CookTime;
+            recipe.TotalTime = recipeQuery.TotalTime;
+            recipe.Instructions = recipeQuery.Instructions;
+            recipe.DateModified = recipeQuery.DateModified;
+           
+            return View(recipe);
         }
 
 
@@ -85,13 +98,14 @@ namespace TheSupperLog.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(RecipeEdit model)
         {
-            if (model == null || !ModelState.IsValid) return BadRequest();
-
             bool wasSuccess = await _recipeService.UpdateRecipeAsync(model);
 
-            if (wasSuccess) return Ok();
+            if (wasSuccess)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
-            return BadRequest();
+            else return BadRequest();
         }
 
 

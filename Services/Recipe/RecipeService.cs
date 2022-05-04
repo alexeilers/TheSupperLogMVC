@@ -70,6 +70,13 @@ namespace TheSupperLog.Services.Recipe
             {
                 Name = model.Name,
                 Category = model.Category,
+                Yield = model.Yield,
+                PrepTime = model.PrepTime,
+                CookTime = model.CookTime,
+                TotalTime = model.CookTime,
+                Instructions = model.Instructions,
+                DateAdded = model.DateAdded,
+                DateModified = model.DateModified,
             };
 
             return recipe;

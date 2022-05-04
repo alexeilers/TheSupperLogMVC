@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TheSupperLog.Data;
 using TheSupperLog.Data.Entities;
@@ -42,7 +43,7 @@ namespace TheSupperLog.Services.Meal
             var mealEntity = await _context.Meals.FindAsync(mealId);
 
             _context.Meals.Remove(mealEntity);
-            return await _context.SaveChangesAsync() == 1; ;
+            return await _context.SaveChangesAsync() == 1;
         }
 
 

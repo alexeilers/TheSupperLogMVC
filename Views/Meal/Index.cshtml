@@ -5,17 +5,15 @@
 
 }
 
-<h1>Supper Log</h1>
-
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create", button type="button" class="btn btn-primary btn-lrg">Log a meal</a>
 </p>
 
 <hr />
 
-<form asp-controller="Recipe" asp-action="Index">
+<form asp-controller="Meal" asp-action="Index">
     <p>
-        Search for a recipe: <input type="text" name="SearchString" />
+        Search for a meal: <input type="text" name="SearchString" />
         <input type="submit" value="Filter" />
     </p>
 </form>
@@ -65,6 +63,7 @@
         <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
     </td>
-</tr>}
+</tr>
+}
     </tbody>
 </table>

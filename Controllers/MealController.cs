@@ -59,16 +59,24 @@ namespace TheSupperLog.Controllers
 
             if (wasSuccess)
             {
-                return Ok();
+                return RedirectToAction(nameof(Index));
             }
 
             else return UnprocessableEntity();
         }
 
         //GET EDIT Meal/Edit/5
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var mealQuery = await _mealService.GetMealByIdAsync(id);
+
+            var meal = new MealEdit();
+
+            meal.Id = mealQuery.Id;
+            meal.Name = mealQuery.Name;
+            meal.Rating = mealQuery.Rating;
+
+            return View(meal);
         }
 
 
@@ -76,41 +84,47 @@ namespace TheSupperLog.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(MealEdit model)
         {
-            if (model == null || !ModelState.IsValid) return BadRequest();
+            //if (model == null) return BadRequest();
 
             bool wasSuccess = await _mealService.UpdateMealAsync(model);
 
-            if (wasSuccess) return Ok();
+            if (wasSuccess)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
-            return BadRequest();
+            else return BadRequest();
         }
 
 
         // GET: Meal/Delete/5
-        public IActionResult Delete()
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
-        }
+            var mealQuery = await _mealService.GetMealByIdAsync(id);
 
+            var meal = new MealDetail();
 
+            meal.Id = mealQuery.Id;
+            meal.Name = mealQuery.Name;
+            meal.Rating = mealQuery.Rating;
 
-        // POST: Meal/Delete/5
-        [HttpPost, ActionName("Delete")]
+            return View(meal);
 
-        public async Task<IActionResult> Delete(int mealId)
-        {
-            var productEntity = await _mealService.GetMealByIdAsync(mealId);
+        //}
 
-            if (productEntity == null)
-            {
-                return NotFound();
-            }
+        //    // POST: Meal/Delete/5
+        //    [HttpPost, ActionName("Delete")]
 
-            bool wasSuccess = await _mealService.DeleteMealAsync(mealId);
+        //public async Task<IActionResult> Delete(MealDetail meal)
+        //{
+        //    bool wasSuccess = await _mealService.DeleteMealAsync(meal);
 
-            if (!wasSuccess) return BadRequest();
+        //    if (wasSuccess)
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
 
-            return Ok();
+        //    else return BadRequest();
         }
     }
 }
