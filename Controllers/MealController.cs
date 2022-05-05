@@ -30,6 +30,8 @@ namespace TheSupperLog.Controllers
             return View(meals);
         }
 
+
+
         // GET: Meal/Details/5
         public async Task<IActionResult> Details(int id)
         {
