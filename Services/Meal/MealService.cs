@@ -14,6 +14,7 @@ namespace TheSupperLog.Services.Meal
     {
         private readonly ApplicationDbContext _context;
 
+
         public MealService(ApplicationDbContext context)
         {
             _context = context;
@@ -65,6 +66,7 @@ namespace TheSupperLog.Services.Meal
             return await mealQuery.ToListAsync();
         }
 
+
         //GET MEAL BY ID
         public async Task<MealDetail> GetMealByIdAsync(int mealId)
         {
@@ -96,39 +98,5 @@ namespace TheSupperLog.Services.Meal
 
             return numberOfChanges == 1;
         }
-
-
-        ////GET MEAL BY NAME
-        //public async Task<MealDetail> GetMealByNameAsync(string name)
-        //{
-        //    var meal = await _context.Meals
-        //        .FirstOrDefaultAsync(m =>
-        //            m.Name == name);
-        //    return meal is null ? null : new MealDetail
-        //    {
-        //        Id = meal.Id,
-        //        Name = meal.Name,
-        //        Rating = meal.Rating
-        //    };
-        //}
-
-
-        ////GET MEAL BY RATING
-        //public async Task<IEnumerable<MealListItem>> GetMealByRatingAsync()
-        //{
-        //    var mealQuery = _context
-        //        .Meals
-        //        .Select(m =>
-        //        new MealListItem
-        //        {
-
-        //            Rating = 5,
-
-        //        });
-        //    return await mealQuery.ToListAsync();
-
-        //}
-
     }
-
 }

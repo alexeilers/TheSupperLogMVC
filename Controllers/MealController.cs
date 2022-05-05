@@ -19,13 +19,19 @@ namespace TheSupperLog.Controllers
 
         public MealController(IMealService mealService)
         {
+
             _mealService = mealService;
         }
 
-        // GET: Meal
-        public async Task<IActionResult> Index()
+
+        public async Task<IActionResult> Index(string searchString)
         {
             var meals = await _mealService.GetAllMealsAsync();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                meals = meals.Where(s => s.Name!.ToLower().Contains(searchString.ToLower()));
+            }
 
             return View(meals.OrderByDescending(meals => meals.DateAdded).Take(10).ToList());
         }
@@ -134,6 +140,3 @@ namespace TheSupperLog.Controllers
 
             else return BadRequest();
         }
-    }
-}
-

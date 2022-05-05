@@ -31,7 +31,7 @@ namespace TheSupperLog
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IMealService, MealService>();
-            services.AddScoped<IRecipeService, RecipeService>();
+            services.AddTransient<IRecipeService, RecipeService>();
             services.AddScoped<IRatingService, RatingService>();
             services.AddScoped<IUserService, UserService>();
 
