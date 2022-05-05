@@ -98,11 +98,12 @@ namespace TheSupperLog.Services.Recipe
 
 
 
-        //UPDATE RECIPE
+        //EDIT RECIPE
         public async Task<bool> UpdateRecipeAsync(RecipeEdit model)
         {
             var recipeEntity = await _context.Recipes.FindAsync(model.Id);
 
+            recipeEntity.Id = model.Id;
             recipeEntity.Name = model.Name;
             recipeEntity.Category = model.Category;
             recipeEntity.Yield = model.Yield;

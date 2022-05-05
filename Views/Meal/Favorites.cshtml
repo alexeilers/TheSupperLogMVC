@@ -17,11 +17,11 @@
                     <h3>@Html.DisplayNameFor(model => model.Name)</h3>
                 </th>
                 <th>
-                    <h3>@Html.DisplayNameFor(model => model.Rating)</h3>
+                    <h3>Ratings: Highest to lowest</h3>
                 </th>
-                <th>
+                @*<th>
                     <h3>Date Added</h3>
-                </th>
+                </th>*@
                 @*<th>
                         @Html.DisplayNameFor(model => model.DateModified)
                     </th>*@
@@ -41,9 +41,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Rating)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.DateAdded)
-                    </td>
+                    </td>*@
                     @*<td>
                     @Html.DisplayFor(modelItem => item.DateModified)
                 </td>*@

@@ -36,7 +36,7 @@ namespace TheSupperLog.Controllers
         {
             var meals = await _mealService.GetAllMealsAsync();
 
-            return View(meals);
+            return View(meals.OrderByDescending(meals => meals.Rating).Take(10).ToList());
         }
 
 

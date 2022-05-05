@@ -39,16 +39,16 @@ namespace TheSupperLog.Controllers
 
 
         //// GET: Recipe/Details/5
-        //public async Task<IActionResult> DetailsById(int id)
-        //{
-        //    var recipe = await _recipeService.GetRecipeByIdAsync(id);
+        public async Task<IActionResult> Details(int id)
+        {
+            var recipe = await _recipeService.GetRecipeByIdAsync(id);
 
-        //    if (recipe == null)
-        //    {
-        //        return null;
-        //    }
-        //    return View(recipe);
-        //}
+            if (recipe == null)
+            {
+                return null;
+            }
+            return View(recipe);
+        }
 
 
         // GET: Recipe/Create
@@ -75,7 +75,7 @@ namespace TheSupperLog.Controllers
         }
 
 
-        //GET EDIT Meal/Edit/5
+        //GET EDIT Recipe/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
             var recipeQuery = await _recipeService.GetRecipeByIdAsync(id);

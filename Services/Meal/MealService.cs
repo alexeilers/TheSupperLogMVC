@@ -81,44 +81,12 @@ namespace TheSupperLog.Services.Meal
         }
 
 
-        //GET MEAL BY NAME
-        public async Task<MealDetail> GetMealByNameAsync(string name)
-        {
-            var meal = await _context.Meals
-                .FirstOrDefaultAsync(m =>
-                    m.Name == name);
-            return meal is null ? null : new MealDetail
-            {
-                Id = meal.Id,
-                Name = meal.Name,
-                Rating = meal.Rating
-            };
-        }
-
-
-        //GET MEAL BY RATING
-        public async Task<IEnumerable<MealListItem>> GetMealByRatingAsync()
-        {
-            var mealQuery = _context
-                .Meals
-                .Select(m =>
-                new MealListItem
-                {
-
-                    Rating = 5,
-
-                });
-            return await mealQuery.ToListAsync();
-
-        }
-
-
-
-        //UPDATE MEAL
+        //EDIT MEAL
         public async Task<bool> UpdateMealAsync(MealEdit model)
         {
             var mealEntity = await _context.Meals.FindAsync(model.Id);
 
+            mealEntity.Id = model.Id;
             mealEntity.Name = model.Name;
             mealEntity.Rating = model.Rating;
             mealEntity.DateModified = DateTimeOffset.Now;
@@ -127,5 +95,39 @@ namespace TheSupperLog.Services.Meal
 
             return numberOfChanges == 1;
         }
+
+
+        ////GET MEAL BY NAME
+        //public async Task<MealDetail> GetMealByNameAsync(string name)
+        //{
+        //    var meal = await _context.Meals
+        //        .FirstOrDefaultAsync(m =>
+        //            m.Name == name);
+        //    return meal is null ? null : new MealDetail
+        //    {
+        //        Id = meal.Id,
+        //        Name = meal.Name,
+        //        Rating = meal.Rating
+        //    };
+        //}
+
+
+        ////GET MEAL BY RATING
+        //public async Task<IEnumerable<MealListItem>> GetMealByRatingAsync()
+        //{
+        //    var mealQuery = _context
+        //        .Meals
+        //        .Select(m =>
+        //        new MealListItem
+        //        {
+
+        //            Rating = 5,
+
+        //        });
+        //    return await mealQuery.ToListAsync();
+
+        //}
+
     }
+
 }
