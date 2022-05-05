@@ -18,6 +18,8 @@ namespace TheSupperLog.Services.User
             _context = context;
         }
 
+
+        //CREATE USER
         public async Task<bool> CreateUserAsync(UserCreate model)
         {
             var userEntity = new UserEntity
@@ -34,6 +36,8 @@ namespace TheSupperLog.Services.User
             return numberOfChanges == 1;
         }
 
+
+        //DELETE USER
         public async Task<bool> DeleteUserAsync(int userId)
         {
             var userEntity = await _context.Users.FindAsync(userId);
@@ -57,6 +61,8 @@ namespace TheSupperLog.Services.User
             return await userQuery.ToListAsync();
         }
 
+
+        //UPDATE USER
         public async Task<bool> UpdateUserAsync(UserEdit model)
         {
             var user = await _context.Users.FindAsync(model.Id);
@@ -71,6 +77,7 @@ namespace TheSupperLog.Services.User
         }
 
 
+        //GET USER BY ID
         public async Task<UserDetail> GetUserByIdAsync(int userId)
         {
             var model = await _context.Users.FirstOrDefaultAsync(m => m.Id == userId);

@@ -31,12 +31,6 @@ namespace TheSupperLog.Controllers
         }
 
 
-        //// GET: Recipe/Details/5
-        //public IActionResult Details()
-        //{
-        //    return View();
-        //}
-
 
         //// GET: Recipe/Details/5
         public async Task<IActionResult> Details(int id)

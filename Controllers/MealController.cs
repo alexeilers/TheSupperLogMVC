@@ -23,7 +23,7 @@ namespace TheSupperLog.Controllers
             _mealService = mealService;
         }
 
-
+        //INDEX
         public async Task<IActionResult> Index(string searchString)
         {
             var meals = await _mealService.GetAllMealsAsync();
@@ -140,3 +140,5 @@ namespace TheSupperLog.Controllers
 
             else return BadRequest();
         }
+    }
+}
