@@ -23,7 +23,9 @@ namespace TheSupperLog.Services.User
             var userEntity = new UserEntity
             {
                 Email = model.Email,
-                Username = model.Username
+                Username = model.Username,
+                Password = model.Password,
+                DateAdded = DateTime.Now,
             };
 
             _context.Users.Add(userEntity);
@@ -61,6 +63,7 @@ namespace TheSupperLog.Services.User
 
             user.Username = model.Username;
             user.Email = model.Email;
+            user.DateAdded = model.DateAdded;
 
             var numberOfChanges = await _context.SaveChangesAsync();
 
@@ -78,6 +81,7 @@ namespace TheSupperLog.Services.User
             {
                 Username = model.Username,
                 Email = model.Email,
+                DateAdded = model.DateAdded,
             };
 
             return user;

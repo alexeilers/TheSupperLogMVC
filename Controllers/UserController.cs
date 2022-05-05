@@ -21,34 +21,34 @@ namespace TheSupperLog.Controllers
             _userService = userService;
         }
 
-        // GET: Meal
+        // GET: User
         public async Task<IActionResult> Index()
         {
-            var meals = await _userService.GetAllUsersAsync();
+            var users = await _userService.GetAllUsersAsync();
 
-            return View(meals);
+            return View(users);
         }
 
-        // GET: Meal/Details/5
+        // GET: User/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var meal = await _userService.GetUserByIdAsync(id);
+            var user = await _userService.GetUserByIdAsync(id);
 
-            if (meal == null)
+            if (user == null)
             {
                 return null;
             }
-            return View(meal);
+            return View(user);
         }
 
-        // GET: Meal/Create
+        // GET: User/Create
         public IActionResult Create()
         {
             return View();
         }
 
 
-        // POST: Meal/Create
+        // POST: User/Create
         [HttpPost]
         public async Task<ActionResult> Create(UserCreate model)
         {
@@ -58,58 +58,72 @@ namespace TheSupperLog.Controllers
 
             if (wasSuccess)
             {
-                return Ok();
+                return RedirectToAction(nameof(Index));
             }
 
             else return UnprocessableEntity();
         }
 
-        //GET EDIT Meal/Edit/5
-        public IActionResult Edit()
+        //GET EDIT User/Edit/5
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var userQuery = await _userService.GetUserByIdAsync(id);
+
+            var user = new UserEdit();
+
+            user.Id = userQuery.Id;
+            user.Username = userQuery.Username;
+            user.Email = userQuery.Email;
+            user.DateAdded = userQuery.DateAdded;
+
+            return View(user);
         }
 
 
-        // POST: Meal/Edit/5
+        // POST: User/Edit/5
         [HttpPost]
         public async Task<IActionResult> Edit(UserEdit model)
         {
-            if (model == null || !ModelState.IsValid) return BadRequest();
-
             bool wasSuccess = await _userService.UpdateUserAsync(model);
 
-            if (wasSuccess) return Ok();
-
-            return BadRequest();
-        }
-
-
-        // GET: Meal/Delete/5
-        public IActionResult Delete()
-        {
-            return View();
-        }
-
-
-
-        // POST: Meal/Delete/5
-        [HttpPost, ActionName("Delete")]
-
-        public async Task<IActionResult> Delete(int mealId)
-        {
-            var productEntity = await _userService.GetUserByIdAsync(mealId);
-
-            if (productEntity == null)
+            if (wasSuccess)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
-            bool wasSuccess = await _userService.DeleteUserAsync(mealId);
+            else return BadRequest();
+        }
 
-            if (!wasSuccess) return BadRequest();
 
-            return Ok();
+        // GET: User/Delete/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userQuery = await _userService.GetUserByIdAsync(id);
+
+            var user = new UserDetail();
+
+            user.Id = userQuery.Id;
+            user.Username = userQuery.Username;
+            user.Email = userQuery.Email;
+
+            return View(user);
+        }
+
+
+
+        // POST: User/Delete/5
+        [HttpPost, ActionName("Delete")]
+
+        public async Task<IActionResult> DeleteConfirm(int id)
+        {
+            bool wasSuccess = await _userService.DeleteUserAsync(id);
+
+            if (wasSuccess)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            else return BadRequest();
         }
     }
 }

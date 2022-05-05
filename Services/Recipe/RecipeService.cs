@@ -82,6 +82,7 @@ namespace TheSupperLog.Services.Recipe
 
             var recipe = new RecipeDetail
             {
+                Id = model.Id,
                 Name = model.Name,
                 Category = model.Category,
                 Yield = model.Yield,

@@ -24,10 +24,11 @@ namespace TheSupperLog.Services.Meal
         {
             var mealEntity = new MealEntity
             {
+                OwnerId = 1,
                 Name = model.Name,
                 Rating = model.Rating,
                 DateAdded = DateTimeOffset.Now,
-                OwnerId = 1
+
             };
 
             _context.Meals.Add(mealEntity);
@@ -58,7 +59,7 @@ namespace TheSupperLog.Services.Meal
                     Id = m.Id,
                     Name = m.Name,
                     Rating = m.Rating,
-                    OwnerId = m.OwnerId,
+                    OwnerId = 1,
                     DateAdded = m.DateAdded
                 });
             return await mealQuery.ToListAsync();

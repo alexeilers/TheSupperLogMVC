@@ -94,8 +94,6 @@ namespace TheSupperLog.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(MealEdit model)
         {
-            //if (model == null) return BadRequest();
-
             bool wasSuccess = await _mealService.UpdateMealAsync(model);
 
             if (wasSuccess)
