@@ -27,9 +27,17 @@ namespace TheSupperLog.Controllers
         {
             var meals = await _mealService.GetAllMealsAsync();
 
-            return View(meals);
+            return View(meals.OrderByDescending(meals => meals.DateAdded).Take(10).ToList());
         }
 
+
+        // GET: Favorites
+        public async Task<IActionResult> Favorites()
+        {
+            var meals = await _mealService.GetAllMealsAsync();
+
+            return View(meals);
+        }
 
 
         // GET: Meal/Details/5

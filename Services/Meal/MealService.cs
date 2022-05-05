@@ -86,14 +86,30 @@ namespace TheSupperLog.Services.Meal
         {
             var meal = await _context.Meals
                 .FirstOrDefaultAsync(m =>
-                    m.Name == name
-                );
+                    m.Name == name);
             return meal is null ? null : new MealDetail
             {
                 Id = meal.Id,
                 Name = meal.Name,
                 Rating = meal.Rating
             };
+        }
+
+
+        //GET MEAL BY RATING
+        public async Task<IEnumerable<MealListItem>> GetMealByRatingAsync()
+        {
+            var mealQuery = _context
+                .Meals
+                .Select(m =>
+                new MealListItem
+                {
+
+                    Rating = 5,
+
+                });
+            return await mealQuery.ToListAsync();
+
         }
 
 

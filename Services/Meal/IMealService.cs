@@ -11,6 +11,7 @@ namespace TheSupperLog.Services
         Task<bool> CreateMealAsync(MealCreate model);
         Task<MealDetail> GetMealByIdAsync(int mealId);
         Task<MealDetail> GetMealByNameAsync(string name);
+        Task<IEnumerable<MealListItem>> GetMealByRatingAsync();
         Task<bool> UpdateMealAsync(MealEdit model);
         Task<bool> DeleteMealAsync(int mealId);
     }
