@@ -60,7 +60,6 @@
 
 The Supper Log is a convenient way to log your meals and keep recipes in one place. You can rate meals to view your favorites, or steer clear of your not-so-favorites. The Log ensures you're not repeating meals too often, and can assist in meal planning.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
