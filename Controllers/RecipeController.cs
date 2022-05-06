@@ -23,11 +23,16 @@ namespace TheSupperLog.Controllers
 
 
         // GET: Recipe
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             var recipes = await _recipeService.GetAllRecipesAsync();
 
-            return View(recipes);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                recipes = recipes.Where(s => s.Name!.ToLower().Contains(searchString.ToLower()));
+            }
+
+            return View(recipes.OrderByDescending(meals => meals.DateAdded).Take(10).ToList());
         }
 
 

@@ -91,7 +91,7 @@ namespace TheSupperLog.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            else return BadRequest();
+            return BadRequest();
         }
 
 

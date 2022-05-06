@@ -14,6 +14,10 @@
             border-radius: 0;
         }
 
+        .jumbotron {
+            background: url("https://cleangreensimple.com/wp-content/uploads/2020/12/cutting-board.jpg") no-repeat center center;
+        }
+
         /* Add a gray background color and some padding to the footer */
         footer {
             background-color: #f2f2f2;
@@ -56,27 +60,26 @@
     <div class="jumbotron">
         <div class="container text-center">
             <h1>The Supper Log</h1>
-            <p>Variety is the spice of life.</p>
+            <h4>Variety is the spice of life</h4>
         </div>
     </div>
 
 
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-   
 
-    <footer class="container-fluid text-center">
-        <p>Copyright Alex Eilers 2022</p>
-    </footer>
+        <footer class="container-fluid text-center">
+            <p>Copyright Alex Eilers 2022</p>
+        </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -67,6 +67,7 @@ namespace TheSupperLog.Services.User
         {
             var user = await _context.Users.FindAsync(model.Id);
 
+            user.Id = model.Id;
             user.Username = model.Username;
             user.Email = model.Email;
             user.DateAdded = model.DateAdded;
@@ -86,6 +87,7 @@ namespace TheSupperLog.Services.User
 
             var user = new UserDetail
             {
+                Id = model.Id,
                 Username = model.Username,
                 Email = model.Email,
                 DateAdded = model.DateAdded,
